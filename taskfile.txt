@@ -1,0 +1,106 @@
+1)Create 20 files with .txt extensions 
+
+
+root@ubuntu-bionic:~/task# touch task{1..20}.txt ->using touch able to create a file. {1..20} defines range or no of files 
+root@ubuntu-bionic:~/task# ls -ltr
+total 0
+-rw-r--r-- 1 root root 0 Apr 16 12:52 task9.txt
+-rw-r--r-- 1 root root 0 Apr 16 12:52 task8.txt
+-rw-r--r-- 1 root root 0 Apr 16 12:52 task7.txt
+-rw-r--r-- 1 root root 0 Apr 16 12:52 task6.txt
+-rw-r--r-- 1 root root 0 Apr 16 12:52 task5.txt
+-rw-r--r-- 1 root root 0 Apr 16 12:52 task4.txt
+-rw-r--r-- 1 root root 0 Apr 16 12:52 task3.txt
+-rw-r--r-- 1 root root 0 Apr 16 12:52 task20.txt
+-rw-r--r-- 1 root root 0 Apr 16 12:52 task2.txt
+-rw-r--r-- 1 root root 0 Apr 16 12:52 task19.txt
+-rw-r--r-- 1 root root 0 Apr 16 12:52 task18.txt
+-rw-r--r-- 1 root root 0 Apr 16 12:52 task17.txt
+-rw-r--r-- 1 root root 0 Apr 16 12:52 task16.txt
+-rw-r--r-- 1 root root 0 Apr 16 12:52 task15.txt
+-rw-r--r-- 1 root root 0 Apr 16 12:52 task14.txt
+-rw-r--r-- 1 root root 0 Apr 16 12:52 task13.txt
+-rw-r--r-- 1 root root 0 Apr 16 12:52 task12.txt
+-rw-r--r-- 1 root root 0 Apr 16 12:52 task11.txt
+-rw-r--r-- 1 root root 0 Apr 16 12:52 task10.txt
+-rw-r--r-- 1 root root 0 Apr 16 12:52 task1.txt
+
+2)rename the first 5 files to .yml extension 
+
+root@ubuntu-bionic:~/task# rename -v 's/.txt/.yml/' task{1..5}.txt
+task1.txt renamed as task1.yml
+task2.txt renamed as task2.yml
+task3.txt renamed as task3.yml
+task4.txt renamed as task4.yml
+task5.txt renamed as task5.yml
+
+-v : Shows a verbose version of the output.
+'s/.txt/.yml/' -> s/PATTERN/REPLACEMENT/FLAGS
+task{1..5}.txt -> Defines the file you want to rename.
+
+root@ubuntu-bionic:~/task# ls -ltr
+total 0
+-rw-r--r-- 1 root root 0 Apr 16 13:11 task9.txt
+-rw-r--r-- 1 root root 0 Apr 16 13:11 task8.txt
+-rw-r--r-- 1 root root 0 Apr 16 13:11 task7.txt
+-rw-r--r-- 1 root root 0 Apr 16 13:11 task6.txt
+-rw-r--r-- 1 root root 0 Apr 16 13:11 task5.yml
+-rw-r--r-- 1 root root 0 Apr 16 13:11 task4.yml
+-rw-r--r-- 1 root root 0 Apr 16 13:11 task3.yml
+-rw-r--r-- 1 root root 0 Apr 16 13:11 task20.txt
+-rw-r--r-- 1 root root 0 Apr 16 13:11 task2.yml
+-rw-r--r-- 1 root root 0 Apr 16 13:11 task19.txt
+-rw-r--r-- 1 root root 0 Apr 16 13:11 task18.txt
+-rw-r--r-- 1 root root 0 Apr 16 13:11 task17.txt
+-rw-r--r-- 1 root root 0 Apr 16 13:11 task16.txt
+-rw-r--r-- 1 root root 0 Apr 16 13:11 task15.txt
+-rw-r--r-- 1 root root 0 Apr 16 13:11 task14.txt
+-rw-r--r-- 1 root root 0 Apr 16 13:11 task13.txt
+-rw-r--r-- 1 root root 0 Apr 16 13:11 task12.txt
+-rw-r--r-- 1 root root 0 Apr 16 13:11 task11.txt
+-rw-r--r-- 1 root root 0 Apr 16 13:11 task10.txt
+-rw-r--r-- 1 root root 0 Apr 16 13:11 task1.yml
+
+3)Print the latest created top 5 files among the total no of files
+
+root@ubuntu-bionic:~/task# touch test{1..5}.txt
+root@ubuntu-bionic:~/task# ls -tl
+total 0
+-rw-r--r-- 1 root root 0 Apr 16 13:23 test1.txt
+-rw-r--r-- 1 root root 0 Apr 16 13:23 test2.txt
+-rw-r--r-- 1 root root 0 Apr 16 13:23 test3.txt
+-rw-r--r-- 1 root root 0 Apr 16 13:23 test4.txt
+-rw-r--r-- 1 root root 0 Apr 16 13:23 test5.txt
+-rw-r--r-- 1 root root 0 Apr 16 13:11 task1.yaml
+-rw-r--r-- 1 root root 0 Apr 16 13:11 task10.txt
+-rw-r--r-- 1 root root 0 Apr 16 13:11 task11.txt
+-rw-r--r-- 1 root root 0 Apr 16 13:11 task12.txt
+-rw-r--r-- 1 root root 0 Apr 16 13:11 task13.txt
+-rw-r--r-- 1 root root 0 Apr 16 13:11 task14.txt
+-rw-r--r-- 1 root root 0 Apr 16 13:11 task15.txt
+-rw-r--r-- 1 root root 0 Apr 16 13:11 task16.txt
+-rw-r--r-- 1 root root 0 Apr 16 13:11 task17.txt
+-rw-r--r-- 1 root root 0 Apr 16 13:11 task18.txt
+-rw-r--r-- 1 root root 0 Apr 16 13:11 task19.txt
+-rw-r--r-- 1 root root 0 Apr 16 13:11 task2.yaml
+-rw-r--r-- 1 root root 0 Apr 16 13:11 task20.txt
+-rw-r--r-- 1 root root 0 Apr 16 13:11 task3.yaml
+-rw-r--r-- 1 root root 0 Apr 16 13:11 task4.yaml
+-rw-r--r-- 1 root root 0 Apr 16 13:11 task5.yaml
+-rw-r--r-- 1 root root 0 Apr 16 13:11 task6.txt
+-rw-r--r-- 1 root root 0 Apr 16 13:11 task7.txt
+-rw-r--r-- 1 root root 0 Apr 16 13:11 task8.txt
+-rw-r--r-- 1 root root 0 Apr 16 13:11 task9.txt
+root@ubuntu-bionic:~/task# ls -tl  | head -5 
+total 0
+-rw-r--r-- 1 root root 0 Apr 16 13:23 test1.txt
+-rw-r--r-- 1 root root 0 Apr 16 13:23 test2.txt
+-rw-r--r-- 1 root root 0 Apr 16 13:23 test3.txt
+-rw-r--r-- 1 root root 0 Apr 16 13:23 test4.txt
+root@ubuntu-bionic:~/task# ls -tl | head -6  
+total 0
+-rw-r--r-- 1 root root 0 Apr 16 13:23 test1.txt
+-rw-r--r-- 1 root root 0 Apr 16 13:23 test2.txt
+-rw-r--r-- 1 root root 0 Apr 16 13:23 test3.txt
+-rw-r--r-- 1 root root 0 Apr 16 13:23 test4.txt
+-rw-r--r-- 1 root root 0 Apr 16 13:23 test5.txt
