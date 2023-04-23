@@ -1,0 +1,16 @@
+
+1)To list a file more than 4kb using du command.
+root@ubuntu-bionic:~# du -a -Bk -t4 ./*
+4K      ./newdir1/file1.txt
+4K      ./newdir1/file2.txt
+12K     ./newdir1
+
+
+-a --> all files and folders under ./
+-BK --->  -B, --block-size=SIZE
+              scale sizes by SIZE before printing them; e.g., '-BM' prints sizes in units of  1,048,576  bytes;  see  SIZE
+        
+-t4 ---> -t, --threshold=SIZE
+              exclude entries smaller than SIZE if positive, or entries greater than SIZE if negative
+              
+ 
