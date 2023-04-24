@@ -13,4 +13,30 @@ root@ubuntu-bionic:~# du -a -Bk -t4 ./*
 -t4 ---> -t, --threshold=SIZE
               exclude entries smaller than SIZE if positive, or entries greater than SIZE if negative
               
+ 2)Using awk you need to replace row3 to line3
+ 
+ vagrant@ubuntu-bionic:~$ cat newdir1/file1.txt
+Name : StudentNo : DOB
+Sam : 123 : 23/09/2011
+Nick : 456 : 12/06/2012
+Linus : 678 : 25/08/2014
+vagrant@ubuntu-bionic:~$ awk -F ':' '/Linus/{gsub(/Linus/,"Nick : 456 : 12/06/2012");}1'  newdir1/file1.txt
+Name : StudentNo : DOB
+Sam : 123 : 23/09/2011
+Nick : 456 : 12/06/2012
+Nick : 456 : 12/06/2012 : 678 : 25/08/2014
+
+3)using awk or cut to get list of users
+vagrant@ubuntu-bionic:~$ awk -F ':' '{print NR "-" $1}' newdir1/file1.txt
+1-Name
+2-Sam
+3-Nick
+4-Linus
+vagrant@ubuntu-bionic:~$ cut -d: -f1 newdir1/file1.txt
+Name
+Sam
+Nick
+Linus
+
+              
  
