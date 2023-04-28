@@ -38,6 +38,8 @@ task5.txt renamed as task5.yml
 's/.txt/.yml/' -> s/PATTERN/REPLACEMENT/FLAGS
 task{1..5}.txt -> Defines the file you want to rename.
 
+for task in $(ls task{1..5}.txt); do mv "$task" "${task%.txt}.yml"; done
+
 root@ubuntu-bionic:~/task# ls -ltr
 total 0
 -rw-r--r-- 1 root root 0 Apr 16 13:11 task9.txt
