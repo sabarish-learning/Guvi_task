@@ -26,6 +26,12 @@ Sam : 123 : 23/09/2011
 Nick : 456 : 12/06/2012
 Nick : 456 : 12/06/2012 : 678 : 25/08/2014
 
+vagrant@ubuntu-bionic:~$ cat newdir1/file1.txt
+Name : StudentNo : DOB
+Sam : 123 : 23/09/2011
+Nick : 456 : 12/06/2012
+Linus : 678 : 25/08/2014
+
 3)using awk or cut to get list of users
 vagrant@ubuntu-bionic:~$ awk -F ':' '{print NR "-" $1}' newdir1/file1.txt
 1-Name
