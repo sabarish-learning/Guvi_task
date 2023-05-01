@@ -33,6 +33,105 @@ Nick : 456 : 12/06/2012
 Linus : 678 : 25/08/2014
 
 3)using awk or cut to get list of users
+vagrant@ubuntu-bionic:~$ cat /etc/passwd | awk -F ':' '{print $1}'
+root
+daemon
+bin
+sys
+sync
+games
+man
+lp
+mail
+news
+uucp
+proxy
+www-data
+backup
+list
+irc
+gnats
+nobody
+systemd-network
+systemd-resolve
+syslog
+messagebus
+_apt
+lxd
+uuidd
+dnsmasq
+landscape
+sshd
+pollinate
+vagrant
+ubuntu
+vagrant@ubuntu-bionic:~$ cat /etc/passwd | cut d: -f1
+cut: 'd:': No such file or directory
+vagrant@ubuntu-bionic:~$ cat /etc/passwd | cut -d: -f1
+root
+daemon
+bin
+sys
+sync
+games
+man
+lp
+mail
+news
+uucp
+proxy
+www-data
+backup
+list
+irc
+gnats
+nobody
+systemd-network
+systemd-resolve
+syslog
+messagebus
+_apt
+lxd
+uuidd
+dnsmasq
+landscape
+sshd
+pollinate
+vagrant
+ubuntu
+vagrant@ubuntu-bionic:~$ compgen -u
+root
+daemon
+bin
+sys
+sync
+games
+man
+lp
+mail
+news
+uucp
+proxy
+www-data
+backup
+list
+irc
+gnats
+nobody
+systemd-network
+systemd-resolve
+syslog
+messagebus
+_apt
+lxd
+uuidd
+dnsmasq
+landscape
+sshd
+pollinate
+vagrant
+ubuntu
+
 vagrant@ubuntu-bionic:~$ awk -F ':' '{print NR "-" $1}' newdir1/file1.txt
 1-Name
 2-Sam
