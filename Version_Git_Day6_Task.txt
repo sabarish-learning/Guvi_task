@@ -1,0 +1,318 @@
+1.create a private repo, 
+2.add people to repo, 
+4. Generate ssh key& add the key for Authentication, 
+6. clone the repo, create a branch, add the file, push the branch with file created using sshUrl.
+5. what is git revert & give me the cmd to revert last change 
+7. create a PullRequest,Approve & merge the code to main branch.
+3. add them as reviewer for the repo created
+
+
+#populate the GH_TOKEN environment variable with a GitHub API authentication token.
+gh auth login
+
+# create a repository interactively
+gh repo create
+
+# create a new remote repository and clone it locally
+gh repo create my-project --public --clone
+Ex:gh repo create DemoRepo --public --clone
+# create a remote repository from the current directory
+gh repo create my-project --private --source=. --remote=upstream
+Ex: gh repo create DemoRepo --private --source=. --remote=upstream
+
+
+
+git config --global user.name sabarish-learning
+
+git config --global user.email sabarishdevaraju@gmail.com
+
+git init
+
+git status
+
+
+
+
+to install git in ubuntu
+
+sudo apt install git
+
+sudo add-apt-repository ppa:git-core/ppa # apt update; apt install git
+
+
+to install gh(github cli) in ubuntu
+
+type -p curl >/dev/null || (sudo apt update && sudo apt install curl -y)
+curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg \
+&& sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg \
+&& echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
+&& sudo apt update \
+&& sudo apt install gh -y
+
+
+sabarishdevaraju@myfirstvm:~$ gh auth login
+? What account do you want to log into? GitHub.com
+? What is your preferred protocol for Git operations? HTTPS
+? Authenticate Git with your GitHub credentials? Yes
+? How would you like to authenticate GitHub CLI? Login with a web browser
+
+! First copy your one-time code: 9F02-02AA
+Press Enter to open github.com in your browser... 
+! Failed opening a web browser at https://github.com/login/device
+  exec: "xdg-open,x-www-browser,www-browser,wslview": executable file not found in $PATH
+  Please try entering the URL in your browser manually
+✓ Authentication complete.
+- gh config set -h github.com git_protocol https
+✓ Configured git protocol
+✓ Logged in as sabarish-learning
+
+https://github.com/login/device
+
+gh config set -h github.com git_protocol https
+
+
+
+sabarishdevaraju@myfirstvm:~/GitRepos$ gh repo create DemoRepo --private --source=. --remote=upstream
+current directory is not a git repository. Run `git init` to initialize it
+
+sabarishdevaraju@myfirstvm:~/GitRepos$ git init
+Initialized empty Git repository in /home/sabarishdevaraju/GitRepos/.git/
+
+sabarishdevaraju@myfirstvm:~/GitRepos$ ssh-keygen -t rsa -b 4096 -C "sabarishdevaraju@gmail.com"
+Generating public/private rsa key pair.
+Enter file in which to save the key (/home/sabarishdevaraju/.ssh/id_rsa): 
+Enter passphrase (empty for no passphrase): 
+Enter same passphrase again: 
+Your identification has been saved in /home/sabarishdevaraju/.ssh/id_rsa.
+Your public key has been saved in /home/sabarishdevaraju/.ssh/id_rsa.pub.
+The key fingerprint is:
+SHA256:5OpwvGfr+YQ8VRhvVUVTzJPlbg+CNR8TUIyuRV2QCUA sabarishdevaraju@gmail.com
+The key's randomart image is:
++---[RSA 4096]----+
+|         .E.oB=@%|
+|           +o.==+|
+|        . .o* o o|
+|       o   =oo + |
+|        S oo. o o|
+|     . o o.  . o.|
+|    . + + .     .|
+|     + .o+       |
+|      o++o.      |
++----[SHA256]-----+
+
+sabarishdevaraju@myfirstvm:~/GitRepos$ cd /home/sabarishdevaraju/.ssh/id_rsa
+-bash: cd: /home/sabarishdevaraju/.ssh/id_rsa: Not a directory
+
+sabarishdevaraju@myfirstvm:~/GitRepos$ cat /home/sabarishdevaraju/.ssh/id_rsa
+-----BEGIN RSA PRIVATE KEY-----
+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
+-----END RSA PRIVATE KEY-----
+
+sabarishdevaraju@myfirstvm:~/GitRepos$ cat /home/sabarishdevaraju/.ssh/id_rsa.pub
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDKCoDz3NL5yFxQYSe7uGjh+np2aEZxDoevokfVtlubR5DAZyYaiENQ5DRw+8ZfKPKT1bqrcsstMq92H2QA3oJfwhQVNPtWKCdyvqFLorta8EGyUG76djyMnEHEx6rQ8RxbCFb5TlChGTB0r9y+CfZw4/bxiqXhcovaqMyR4kQ5FX9CHHNTMWfEqFudwrlOMs4giF6DFiphOImjLJ/ZZ+iFoTG/ERJ6n6M8fGWfGG5gcl5j5+N+1yA4Id6byuiP1DQe0ylpZdwtL+wa07u51gaohveTNsNVbBya2hiJ5iCVZWABrkQ+2zcY0m66aqKfJP46m1v0KIzR91/Z6tv+7bZwr8SCJkPAFRmV0gEm3TbSkqr4k6/sDGQ73dfPVG7So1Lsk4qfZSgJBWMTMxcpuiFdj0kOOt9onG1X0IK76MVugioU/Hlf6t6aAKjwbUn7ClOoawfa5n/Zn8Cpv+DXnOK2We8jo2MDWQJ+HninqAjtTQ4V//39zj9tU7r8rOCCO71R3BPsQiHiwl1nqtk2GLuOgH82uTbqJpwD2ED60HJ2BdHyXAFAMrAVZXQ5Ky7WmF6NDHYFRCXpS787R6yUNQYRhFA7zbjtU1nJUP/5WUlLRi7HoQGytb875I5BsZu2/hQbZtrcJ55CcyDnRtBQ0dG9KaMNvjoRuL9uqOBNv/kY9w== sabarishdevaraju@gmail.com
+
+sabarishdevaraju@myfirstvm:~/GitRepos$ eval "$(ssh-agent -s)"
+Agent pid 7073
+
+sabarishdevaraju@myfirstvm:~/GitRepos$ ssh-add ~/.ssh/id_rsa
+Identity added: /home/sabarishdevaraju/.ssh/id_rsa (/home/sabarishdevaraju/.ssh/id_rsa)
+
+sabarishdevaraju@myfirstvm:~/GitRepos$ git clone git@github.com:sabarish-learning/DemoRepo.git
+Cloning into 'DemoRepo'...
+The authenticity of host 'github.com (20.205.243.166)' can't be established.
+ECDSA key fingerprint is SHA256:p2QAMXNIC1TJYWeIOttrVc98/R1BUFWu3/LiyKgUfQM.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added 'github.com,20.205.243.166' (ECDSA) to the list of known hosts.
+warning: You appear to have cloned an empty repository.
+sabarishdevaraju@myfirstvm:~/GitRepos$ ls
+DemoRepo
+sabarishdevaraju@myfirstvm:~/GitRepos$ cd DemoRepo/
+sabarishdevaraju@myfirstvm:~/GitRepos/DemoRepo$ touch source.txt
+sabarishdevaraju@myfirstvm:~/GitRepos/DemoRepo$ git add source.txt 
+sabarishdevaraju@myfirstvm:~/GitRepos/DemoRepo$ git commit -m "created source.txt file"
+
+*** Please tell me who you are.
+
+Run
+
+  git config --global user.email "you@example.com"
+  git config --global user.name "Your Name"
+
+to set your account's default identity.
+Omit --global to set the identity only in this repository.
+
+fatal: empty ident name (for <sabarishdevaraju@myfirstvm.asia-southeast1-b.c.zinc-computer-386113.internal>) not allowed
+
+sabarishdevaraju@myfirstvm:~/GitRepos/DemoRepo$ git config --global user.email "sabarishdevaraju@gmail.com"
+
+sabarishdevaraju@myfirstvm:~/GitRepos/DemoRepo$ git config --global user.name "sabarish-learning"
+
+sabarishdevaraju@myfirstvm:~/GitRepos/DemoRepo$ git commit -m "created source.txt file"
+[master (root-commit) cf7aa36] created source.txt file
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 source.txt
+ 
+sabarishdevaraju@myfirstvm:~/GitRepos/DemoRepo$ git push origin main
+error: src refspec main does not match any.
+error: failed to push some refs to 'git@github.com:sabarish-learning/DemoRepo.git'
+
+sabarishdevaraju@myfirstvm:~/GitRepos/DemoRepo$ git push origin master
+Counting objects: 3, done.
+Writing objects: 100% (3/3), 228 bytes | 228.00 KiB/s, done.
+Total 3 (delta 0), reused 0 (delta 0)
+To github.com:sabarish-learning/DemoRepo.git
+ * [new branch]      master -> master
+ 
+sabarishdevaraju@myfirstvm:~/GitRepos/DemoRepo$ git status
+On branch master
+Your branch is up to date with 'origin/master'.
+
+nothing to commit, working tree clean
+
+sabarishdevaraju@myfirstvm:~/GitRepos/DemoRepo$ git branch
+* master
+
+sabarishdevaraju@myfirstvm:~/GitRepos/DemoRepo$ git log
+commit cf7aa3640da733c3ac5e347c4b1d0f9f80e1a0e4 (HEAD -> master, origin/master)
+Author: sabarish-learning <sabarishdevaraju@gmail.com>
+Date:   Mon May 8 17:50:14 2023 +0000
+
+    created source.txt file
+	
+sabarishdevaraju@myfirstvm:~/GitRepos/DemoRepo$ vi source.txt 
+
+sabarishdevaraju@myfirstvm:~/GitRepos/DemoRepo$ cat source.txt 
+artifact : 245.738
+config : 3423n5nbh3232346h4m324j544jkh6
+
+sabarishdevaraju@myfirstvm:~/GitRepos/DemoRepo$ git add source.txt 
+
+sabarishdevaraju@myfirstvm:~/GitRepos/DemoRepo$ git commit -m "added artifact and config to the source.txt file"
+
+[master cabbc3d] added artifact and config to the source.txt file
+ 1 file changed, 2 insertions(+)
+ 
+sabarishdevaraju@myfirstvm:~/GitRepos/DemoRepo$ git push origin master
+Counting objects: 3, done.
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (3/3), 328 bytes | 328.00 KiB/s, done.
+Total 3 (delta 0), reused 0 (delta 0)
+To github.com:sabarish-learning/DemoRepo.git
+   cf7aa36..cabbc3d  master -> master
+   
+sabarishdevaraju@myfirstvm:~/GitRepos/DemoRepo$ git branch codechange
+sabarishdevaraju@myfirstvm:~/GitRepos/DemoRepo$ git checkout codechange 
+Switched to branch 'codechange'
+sabarishdevaraju@myfirstvm:~/GitRepos/DemoRepo$ git branch
+* codechange
+  master
+sabarishdevaraju@myfirstvm:~/GitRepos/DemoRepo$ git log
+commit cabbc3d836ed56ee65f98b163bdaed12217c9978 (HEAD -> codechange, origin/master, master)
+Author: sabarish-learning <sabarishdevaraju@gmail.com>
+Date:   Mon May 8 17:54:15 2023 +0000
+
+    added artifact and config to the source.txt file
+
+commit cf7aa3640da733c3ac5e347c4b1d0f9f80e1a0e4
+Author: sabarish-learning <sabarishdevaraju@gmail.com>
+Date:   Mon May 8 17:50:14 2023 +0000
+
+    created source.txt file
+sabarishdevaraju@myfirstvm:~/GitRepos/DemoRepo$ ls -ltr
+total 4
+-rw-rw-r-- 1 sabarishdevaraju sabarishdevaraju 59 May  8 17:53 source.txt
+sabarishdevaraju@myfirstvm:~/GitRepos/DemoRepo$ vi source.txt
+sabarishdevaraju@myfirstvm:~/GitRepos/DemoRepo$ cat source.txt 
+artifact : 256.567
+config : 7j5kj435k34kh34j6jh34hj3j3kk543k
+sabarishdevaraju@myfirstvm:~/GitRepos/DemoRepo$ git add .
+sabarishdevaraju@myfirstvm:~/GitRepos/DemoRepo$ git commit -m "updated new artifact and config to the source.txt file"
+[codechange b0afc0f] updated new artifact and config to the source.txt file
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+sabarishdevaraju@myfirstvm:~/GitRepos/DemoRepo$ git status
+On branch codechange
+nothing to commit, working tree clean
+sabarishdevaraju@myfirstvm:~/GitRepos/DemoRepo$ git push codechange
+fatal: 'codechange' does not appear to be a git repository
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+sabarishdevaraju@myfirstvm:~/GitRepos/DemoRepo$ git push origin codechange
+Counting objects: 3, done.
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (3/3), 337 bytes | 337.00 KiB/s, done.
+Total 3 (delta 0), reused 0 (delta 0)
+remote: 
+remote: Create a pull request for 'codechange' on GitHub by visiting:
+remote:      https://github.com/sabarish-learning/DemoRepo/pull/new/codechange
+remote: 
+To github.com:sabarish-learning/DemoRepo.git
+ * [new branch]      codechange -> codechange
+sabarishdevaraju@myfirstvm:~/GitRepos/DemoRepo$ git log
+commit b0afc0f10551ae8708c0b6358beeef7c48ef9845 (HEAD -> codechange, origin/codechange)
+Author: sabarish-learning <sabarishdevaraju@gmail.com>
+Date:   Mon May 8 18:02:10 2023 +0000
+
+    updated new artifact and config to the source.txt file
+
+commit cabbc3d836ed56ee65f98b163bdaed12217c9978 (origin/master, master)
+Author: sabarish-learning <sabarishdevaraju@gmail.com>
+Date:   Mon May 8 17:54:15 2023 +0000
+
+    added artifact and config to the source.txt file
+
+commit cf7aa3640da733c3ac5e347c4b1d0f9f80e1a0e4
+Author: sabarish-learning <sabarishdevaraju@gmail.com>
+Date:   Mon May 8 17:50:14 2023 +0000
+
+    created source.txt file
+sabarishdevaraju@myfirstvm:~/GitRepos/DemoRepo$ 
