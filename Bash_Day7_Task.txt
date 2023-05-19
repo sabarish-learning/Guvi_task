@@ -1,0 +1,121 @@
+1. Create a shell script to print the HTTP error code of guvi.in & print, the success/failure message based on the error code response 
+2. Given a file, replace all occurrence of the word ""give"" with ""learning"" from 5th line till the end in only those lines that contain the word "welcome"
+3. write a script to display success if previous script ran without any error else print failed.
+
+
+1)Create a shell script to print the HTTP error code of guvi.in & print, the success/failure message based on the error code response 
+
+#!/bin/bash
+
+http=$(curl -s -i -w "%{http_code}\n" $1 -o response.txt)
+if [[ $http -eq "200" ]]; then
+echo "$http is failure"
+else
+echo "$http is success"
+fi
+
+
+curl -s -i -w "%{http_code}\n" guvi.in -o response.txt
+
+-i, --include
+              Include  the  HTTP  response  headers  in the output. The HTTP response headers can include things like
+              server name, cookies, date of the document, HTTP version and more...
+
+              To view the request headers, consider the -v, --verbose option.
+
+              See also -v, --verbose.
+-s, --silent
+              Silent or quiet mode. Don't show progress meter or error messages.  Makes Curl mute. It will still out‐
+              put the data you ask for, potentially even to the terminal/stdout unless you redirect it.
+
+              Use  -S,  --show-error  in  addition to this option to disable progress meter but still show error mes‐
+              sages.
+
+              See also -v, --verbose and --stderr.
+
+-w, --write-out <format>
+              Make  curl  display information on stdout after a completed transfer. The format is a string that may contain plain text mixed with any number of variables. The format can be specified as a
+              literal "string", or you can have curl read the format from a file with "@filename" and to tell curl to read the format from stdin you write "@-".
+
+              The variables present in the output format will be substituted by the value or text that curl thinks fit, as described below. All variables are specified as %{variable_name} and to output a
+              normal % you just write them as %%. You can output a newline by using \n, a carriage return with \r and a tab space with \t.
+
+              NOTE: The %-symbol is a special symbol in the win32-environment, where all occurrences of % must be doubled when using this option.
+			  
+			   http_code      The numerical response code that was found in the last retrieved HTTP(S) or FTP(s) transfer. In 7.18.2 the alias response_code was added to show the same info.
+			   
+-o, --output <file>
+              Write output to <file> instead of stdout. If you are using {} or [] to fetch multiple documents, you can use '#' followed by a number in the <file> specifier. That variable will be replaced
+              with the current string for the URL being fetched. Like in:
+
+               curl http://{one,two}.example.com -o "file_#1.txt"
+			   
+**********************************************************************************************************************************************************************************			   
+			   
+
+2)2. Given a file, replace all occurrence of the word ""give"" with ""learning"" from 5th line till the end in only those lines that contain the word "welcome"
+
+#!/bin/bash
+
+filename="$1"  
+start_line=5
+lines=$(grep -n "welcome" "$1" | cut -d ":" -f1)
+
+for line in $lines; do
+    if [[ $line -ge $start_line ]]; then
+           sed -i "${line}s/give/learning/g" "$1"
+    fi
+done
+
+
+
+
+vagrant@ubuntu-bionic:~/scripting$ cat paragraph.txt
+welcome to our community! We are thrilled to have you here, ready to give the spirit of collaboration and knowledge sharing.
+As a tight-knit group, we believe in the power of give back.
+Whether it's lending a helping hand or offering guidance, we encourage every member to contribute and give generously to support one another.
+Together, let's create an inclusive environment where everyone feels valued and welcome give.
+welcome to our community! We are thrilled to have you here, ready to give the spirit of collaboration and knowledge sharing.
+As a tight-knit group, we believe in the power of give back.
+Whether it's lending a helping hand or offering guidance, we encourage every member to contribute and give generously to support one another.
+Together, let's create an inclusive environment where everyone feels valued and welcome give.
+welcome to our community! We are thrilled to have you here, ready to give the spirit of collaboration and knowledge sharing.
+As a tight-knit group, we believe in the power of give back.
+Whether it's lending a helping hand or offering guidance, we encourage every member to contribute and give generously to support one another.
+Together, let's create an inclusive environment where everyone feels valued and welcome give.
+
+vagrant@ubuntu-bionic:~/scripting$ ./replace.sh paragraph.txt
+
+vagrant@ubuntu-bionic:~/scripting$ cat paragraph.txt
+welcome to our community! We are thrilled to have you here, ready to give the spirit of collaboration and knowledge sharing.
+As a tight-knit group, we believe in the power of give back.
+Whether it's lending a helping hand or offering guidance, we encourage every member to contribute and give generously to support one another.
+Together, let's create an inclusive environment where everyone feels valued and welcome give.
+welcome to our community! We are thrilled to have you here, ready to learning the spirit of collaboration and knowledge sharing.
+As a tight-knit group, we believe in the power of give back.
+Whether it's lending a helping hand or offering guidance, we encourage every member to contribute and give generously to support one another.
+Together, let's create an inclusive environment where everyone feels valued and welcome learning.
+welcome to our community! We are thrilled to have you here, ready to learning the spirit of collaboration and knowledge sharing.
+As a tight-knit group, we believe in the power of give back.
+Whether it's lending a helping hand or offering guidance, we encourage every member to contribute and give generously to support one another.
+Together, let's create an inclusive environment where everyone feels valued and welcome learning.
+			
+****************************************************************************************************************************************************************************************************			
+
+3)write a script to display success if previous script ran without any error else print failed.
+
+#!/bin/bash
+
+./$1
+if [[ $? -eq "0" ]]; then
+echo "$? is success"
+else
+echo "$? is failed"
+fi
+
+vagrant@ubuntu-bionic:~/scripting$ ./error.sh print.sh
+Hello world
+0 is success
+vagrant@ubuntu-bionic:~/scripting$ ./error.sh test.sh
+./test.sh: line 4: aksldlkalkla: command not found
+1 is failed
