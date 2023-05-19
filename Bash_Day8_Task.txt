@@ -1,0 +1,95 @@
+1. Syntax for all loops in shell scripting 
+2. Bash script to calculate remaining days to expire SSL certs of a website
+
+1. Syntax for all loops in shell scripting
+
+while loops
+******************
+while [ condition ]
+do
+command1
+command2
+done
+
+example:
+#!/bin/bash
+echo "Number to display Table"
+read -r n
+i=0
+while [ $i -ne 10 ]; do
+i=$(( i+1 ))
+m=$(( i+n ))
+echo "$n * $i = $m"
+done
+
+-----------------------------------------------------
+for loops
+*********
+for var in list
+do
+command 1
+command 2
+done
+
+example:
+#!/bin/bash
+echo "Number to display Table"
+read -r n
+i=0
+for i in 1 2 3 4 5 6 7 8 9 10
+do 
+  echo "$i * $n = `expr $i \* $n`"
+done
+----------------------------------------------------
+until loops
+***********
+until [ conditional statement ]
+do
+command1
+command2
+done
+
+
+example:
+#!/bin/bash
+echo "Number to display Table"
+read -r n
+i=0
+until [ $i -ne 10 ]; 
+do
+i=$(( i+1 ))
+m=$(( i+n ))
+echo "$n * $i = $m"
+done
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+2. Bash script to calculate remaining days to expire SSL certs of a website
+
+#!/bin/bash
+
+URL="$1"
+echo "$1"
+Expires_date=$(curl -s -i $1 | grep Expires | awk '{print $3,$4,$5}')
+
+Current_date=$(curl -s -i $1 | grep Date | awk '{print $3,$4,$5}')
+
+expiry_timestamp=$(date -d "$Expires_date" +%s)
+
+current_timestamp=$(date -d "$Current_date" +%s)
+
+remaining_days=$(( (expiry_timestamp - current_timestamp) / 86400 ))
+
+echo "Remaining days for SSL is $remaining_days"
+
+
+OUTPUT:
+vagrant@ubuntu-bionic:~/scripting$ ./calculateSSLdays.sh guvi.in
+guvi.in
+Remaining days for SSL is 0
+
+vagrant@ubuntu-bionic:~/scripting$ ./calculateSSLdays.sh google.co.in
+google.co.in
+Remaining days for SSL is 30
