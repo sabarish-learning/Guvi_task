@@ -272,9 +272,12 @@ sabarishdevaraju@myfirstvm:~/GitRepos/DemoRepo$
 PullRequest,Approve & merge
 2. add people to repo, 
 3. add them as reviewer for the repo created
-Few things I have done using github so unable to show here 
+
+sorry few things I have done using github so unable to show here 
 Adding github repo link
-Here is the link -
+Here is the link -https://github.com/sabarish-learning/DemoRepo.git
+Thanks,
+sabarishd
 ----------------------------------------------------------------------------------------
 
 5. what is git revert & give me the cmd to revert last change
