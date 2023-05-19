@@ -7,76 +7,20 @@
 3. add them as reviewer for the repo created
 
 
-#populate the GH_TOKEN environment variable with a GitHub API authentication token.
-gh auth login
-
-# create a repository interactively
-gh repo create
-
-# create a new remote repository and clone it locally
-gh repo create my-project --public --clone
-Ex:gh repo create DemoRepo --public --clone
-# create a remote repository from the current directory
-gh repo create my-project --private --source=. --remote=upstream
-Ex: gh repo create DemoRepo --private --source=. --remote=upstream
+2. add people to repo, 
+7. create a PullRequest,Approve & merge the code to main branch.
+3. add them as reviewer for the repo created
 
 
-
-git config --global user.name sabarish-learning
-
-git config --global user.email sabarishdevaraju@gmail.com
-
-git init
-
-git status
-
-
-
-
-to install git in ubuntu
-
-sudo apt install git
-
-sudo add-apt-repository ppa:git-core/ppa # apt update; apt install git
-
-
-to install gh(github cli) in ubuntu
-
-type -p curl >/dev/null || (sudo apt update && sudo apt install curl -y)
-curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg \
-&& sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg \
-&& echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
-&& sudo apt update \
-&& sudo apt install gh -y
-
-
-sabarishdevaraju@myfirstvm:~$ gh auth login
-? What account do you want to log into? GitHub.com
-? What is your preferred protocol for Git operations? HTTPS
-? Authenticate Git with your GitHub credentials? Yes
-? How would you like to authenticate GitHub CLI? Login with a web browser
-
-! First copy your one-time code: 9F02-02AA
-Press Enter to open github.com in your browser... 
-! Failed opening a web browser at https://github.com/login/device
-  exec: "xdg-open,x-www-browser,www-browser,wslview": executable file not found in $PATH
-  Please try entering the URL in your browser manually
-✓ Authentication complete.
-- gh config set -h github.com git_protocol https
-✓ Configured git protocol
-✓ Logged in as sabarish-learning
-
-https://github.com/login/device
-
-gh config set -h github.com git_protocol https
-
-
+1)1.create a private repo
 
 sabarishdevaraju@myfirstvm:~/GitRepos$ gh repo create DemoRepo --private --source=. --remote=upstream
 current directory is not a git repository. Run `git init` to initialize it
 
 sabarishdevaraju@myfirstvm:~/GitRepos$ git init
 Initialized empty Git repository in /home/sabarishdevaraju/GitRepos/.git/
+----------------------------------------------------------------------------------------------------------------
+4. Generate ssh key& add the key for Authentication, 
 
 sabarishdevaraju@myfirstvm:~/GitRepos$ ssh-keygen -t rsa -b 4096 -C "sabarishdevaraju@gmail.com"
 Generating public/private rsa key pair.
@@ -165,6 +109,9 @@ Agent pid 7073
 sabarishdevaraju@myfirstvm:~/GitRepos$ ssh-add ~/.ssh/id_rsa
 Identity added: /home/sabarishdevaraju/.ssh/id_rsa (/home/sabarishdevaraju/.ssh/id_rsa)
 
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+6. clone the repo, create a branch, add the file, push the branch with file created using sshUrl.
+
 sabarishdevaraju@myfirstvm:~/GitRepos$ git clone git@github.com:sabarish-learning/DemoRepo.git
 Cloning into 'DemoRepo'...
 The authenticity of host 'github.com (20.205.243.166)' can't be established.
@@ -247,6 +194,8 @@ Writing objects: 100% (3/3), 328 bytes | 328.00 KiB/s, done.
 Total 3 (delta 0), reused 0 (delta 0)
 To github.com:sabarish-learning/DemoRepo.git
    cf7aa36..cabbc3d  master -> master
+------------------------------------------------------------------------------------------------------------------   
+7. create a PullRequest,Approve & merge the code to main branch.
    
 sabarishdevaraju@myfirstvm:~/GitRepos/DemoRepo$ git branch codechange
 sabarishdevaraju@myfirstvm:~/GitRepos/DemoRepo$ git checkout codechange 
@@ -286,6 +235,7 @@ fatal: Could not read from remote repository.
 
 Please make sure you have the correct access rights
 and the repository exists.
+
 sabarishdevaraju@myfirstvm:~/GitRepos/DemoRepo$ git push origin codechange
 Counting objects: 3, done.
 Compressing objects: 100% (2/2), done.
@@ -297,6 +247,7 @@ remote:      https://github.com/sabarish-learning/DemoRepo/pull/new/codechange
 remote: 
 To github.com:sabarish-learning/DemoRepo.git
  * [new branch]      codechange -> codechange
+ 
 sabarishdevaraju@myfirstvm:~/GitRepos/DemoRepo$ git log
 commit b0afc0f10551ae8708c0b6358beeef7c48ef9845 (HEAD -> codechange, origin/codechange)
 Author: sabarish-learning <sabarishdevaraju@gmail.com>
@@ -316,3 +267,23 @@ Date:   Mon May 8 17:50:14 2023 +0000
 
     created source.txt file
 sabarishdevaraju@myfirstvm:~/GitRepos/DemoRepo$ 
+
+
+
+2. add people to repo, 
+3. add them as reviewer for the repo created
+
+----------------------------------------------------------------------------------------
+
+5. what is git revert & give me the cmd to revert last change
+
+The git revert command is a forward-moving undo operation that offers a safe method of undoing changes. 
+Instead of deleting or orphaning commits in the commit history, a revert will create a new commit that inverses the changes specified. 
+Git revert is a safer alternative to git reset in regards to losing work.
+
+git revert HEAD~3
+
+git revert <commit_id>
+
+git revert cf7aa3640da733c3ac5e347c4b1d0f9f80e1a0e4
+
