@@ -1,0 +1,546 @@
+Install docker in any server and explore the docker commands (docker images, containers, volumes, network,)
+
+**Hands on**
+
+1)**To install Docker in ubuntu**
+
+```jsx
+sudo apt install [docker.io](http://docker.io/)
+```
+
+2)**To check docker version**
+
+```jsx
+docker —version
+```
+
+3) Firstly docker needs **root permission** so here we are going with `sudo -s` (root permission with vagrant user) or `sudo -i` (root permission with root user) to access docker (or) we can use rootless mode.
+
+4)Firstly will look into **docker pull.** docker pull will download **docker image** from locally or remote repos from [dockerhub.com](http://dockerhub.com) (by default pull tag is **latest)**
+
+```jsx
+root@ip-172-31-39-18:/home/ubuntu# docker pull nginx
+Using default tag: latest
+latest: Pulling from library/nginx
+f03b40093957: Pull complete
+eed12bbd6494: Pull complete
+fa7eb8c8eee8: Pull complete
+7ff3b2b12318: Pull complete
+0f67c7de5f2c: Pull complete
+831f51541d38: Pull complete
+Digest: sha256:af296b188c7b7df99ba960ca614439c99cb7cf252ed7bbc23e90cfda59092305
+Status: Downloaded newer image for nginx:latest
+[docker.io/library/nginx:latest](http://docker.io/library/nginx:latest)
+```
+
+5)**To view list of docker images**
+
+`docker image ls (or) docker images`
+
+```jsx
+root@ip-172-31-39-18:/home/ubuntu# docker image ls
+REPOSITORY   TAG       IMAGE ID       CREATED      SIZE
+nginx        latest    f9c14fe76d50   4 days ago   143MB
+```
+
+6)**To view list of docker containers**
+
+`docker container ls (or) docker ps (or) docker ps -a`
+
+```jsx
+root@ip-172-31-43-77:/home/ubuntu# docker container ls
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+```
+
+```jsx
+
+root@ip-172-31-43-77:/home/ubuntu# docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+```
+
+```jsx
+
+root@ip-172-31-43-77:/home/ubuntu# docker ps -a
+CONTAINER ID   IMAGE         COMMAND       CREATED         STATUS                     PORTS     NAMES
+fcd9c3774293   ubuntu        "/bin/bash"   2 minutes ago   Exited (0) 2 minutes ago             hopeful_sinoussi
+ae819d90690e   hello-world   "/hello"      2 minutes ago   Exited (0) 2 minutes ago             youthful_morse
+```
+
+7)**To run a docker container (run always create a new container)**
+
+`docker run <docker-image>` (if we give container id or other than docker image name it will check docker image)
+
+```jsx
+root@ip-172-31-43-77:/home/ubuntu# docker run ubuntu
+Unable to find image 'ubuntu:latest' locally
+latest: Pulling from library/ubuntu
+dbf6a9befcde: Pull complete
+Digest: sha256:dfd64a3b4296d8c9b62aa3309984f8620b98d87e47492599ee20739e8eb54fbf
+Status: Downloaded newer image for ubuntu:latest
+
+**if we give container id or other than image name it will check for docker image**
+
+root@ip-172-31-43-77:/home/ubuntu# docker run -d 37449e26f8b9
+Unable to find image '37449e26f8b9:latest' locally
+docker: Error response from daemon: pull access denied for 37449e26f8b9, repository does not exist or may require 'docker login': denied: requested access to the resource is denied.
+See 'docker run --help'.
+
+```
+
+8)**To run a docker container in interactively** 
+
+`docker run -it <docker-image>` `<command>`
+
+```jsx
+root@ip-172-31-43-77:/home/ubuntu# docker run -it ubuntu bash
+root@7c7ea5fff307:/# whoami
+root
+root@7c7ea5fff307:/# uname
+Linux
+root@7c7ea5fff307:/# docker image ls
+bash: docker: command not found
+root@7c7ea5fff307:/# docker ps
+bash: docker: command not found
+root@7c7ea5fff307:/# exit
+exit
+```
+
+9)**To run existing running container in interactively**
+
+`docker exec -it <container-id> <command>` (to use `exec` container should run in the `background`) 
+
+```jsx
+root@ip-172-31-43-77:/home/ubuntu# docker exec -it 7c7ea5fff307 bash
+Error response from daemon: Container 7c7ea5fff3072f03218f6c897468f4e215839009dc94887bf5f2e033146f187a is not running
+```
+
+Now the container running in the background so we can use exec
+
+`docker exec -it <container-id> <bash>`
+
+root@ip-172-31-43-77:/home/ubuntu# docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED             STATUS             PORTS     NAMES
+07304ca2e194   ubuntu    "bash"    About an hour ago   Up About an hour             confident_kilby
+root@ip-172-31-43-77:/home/ubuntu# docker exec -it 07 bash
+root@07304ca2e194:/# echo "Hello sabarish"
+Hello sabarish
+root@07304ca2e194:/# echo "$?"
+0
+root@07304ca2e194:/# exit
+exit
+
+10) **To detach(if application is running it will run container in the background) the container** 
+
+`docker run -d —rm <docker-image>` (`d` for detach, once the container detach `—rm` will remove container id from docker container list all(`docker ps -a`) )
+
+```jsx
+root@ip-172-31-43-77:/home/ubuntu# docker run -d ubuntu
+37449e26f8b9be63bde07ee1db48015c74c64a6bfe0f0a69dfa7fe7b4f17ee58
+root@ip-172-31-43-77:/home/ubuntu# docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+root@ip-172-31-43-77:/home/ubuntu# docker ps -a
+CONTAINER ID   IMAGE         COMMAND       CREATED          STATUS                        PORTS     NAMES
+37449e26f8b9   ubuntu        "/bin/bash"   10 seconds ago   Exited (0) 9 seconds ago                cranky_wozniak
+7c7ea5fff307   ubuntu        "bash"        46 minutes ago   Exited (127) 37 minutes ago             strange_noether
+fcd9c3774293   ubuntu        "/bin/bash"   57 minutes ago   Exited (0) 57 minutes ago               hopeful_sinoussi
+ae819d90690e   hello-world   "/hello"      57 minutes ago   Exited (0) 57 minutes ago               youthful_morse @
+```
+
+```jsx
+
+root@ip-172-31-43-77:/home/ubuntu# docker run -d --rm ubuntu
+497a966debedf9a8b98cedf3963499f5a52ba1436e1727446b0e0d940aff3ffe
+root@ip-172-31-43-77:/home/ubuntu# docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+root@ip-172-31-43-77:/home/ubuntu# docker ps -a
+CONTAINER ID   IMAGE         COMMAND       CREATED          STATUS                        PORTS     NAMES
+37449e26f8b9   ubuntu        "/bin/bash"   55 seconds ago   Exited (0) 53 seconds ago               cranky_wozniak
+7c7ea5fff307   ubuntu        "bash"        46 minutes ago   Exited (127) 38 minutes ago             strange_noether
+fcd9c3774293   ubuntu        "/bin/bash"   58 minutes ago   Exited (0) 58 minutes ago               hopeful_sinoussi
+ae819d90690e   hello-world   "/hello"      58 minutes ago   Exited (0) 58 minutes ago               youthful_morse
+```
+
+11**)To run docker container interactively in the background** 
+
+`docker run -itd <docker-image> <command>`
+
+```jsx
+root@ip-172-31-43-77:/home/ubuntu# docker run -itd ubuntu bash
+07304ca2e194af984a2ebf61e78c69416b4e0b66724dc31e80e44c59d05600a7
+root@ip-172-31-43-77:/home/ubuntu# docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED         STATUS         PORTS     NAMES
+07304ca2e194   ubuntu    "bash"    6 seconds ago   Up 5 seconds             confident_kilby
+```
+
+12)**how to run linux commands explicitly using docker run?**
+
+`docker run centos echo “Hello World”`
+
+```jsx
+root@ubuntu-bionic:~# docker run ubuntu echo "Hello world"
+Hello world
+
+root@ubuntu-bionic:~# docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+
+root@ubuntu-bionic:~# docker ps -a
+CONTAINER ID   IMAGE                               COMMAND                  CREATED              STATUS                          PORTS     NAMES
+58501179a6da   ubuntu                              "echo 'Hello world'"     8 seconds ago        Exited (0) 6 seconds ago                  upbeat_wilbur
+619ec19c8641   ubuntu                              "/bin/bash"              52 seconds ago       Exited (0) 51 seconds ago                 intelligent_villani
+aab755824c3c   ubuntu                              "/bin/bash"              About a minute ago   Exited (0) About a minute ago             nice_maxwell
+939de32aaf9b   sabarish24/demo_repo:myhelloworld   "echo 'Hello Sabaris…"   3 days ago           Exited (0) 3 days ago                     nice_lamarr
+c833d655a68c   nginx                               "/docker-entrypoint.…"   3 days ago           Exited (0) 2 days ago                     crazy_dhawan
+45ee2c60cafd   nginx                               "/docker-entrypoint.…"   4 days ago           Exited (0) 3 days ago                     gallant_wing
+```
+
+13) **How to give a name tag to the container ?** (use **--name <container_name>**)
+
+`docker run --name <container_name> <container_image> echo "Hello world”` 
+
+```jsx
+root@ubuntu-bionic:~# docker run --name ubuntu_vm ubuntu echo "Hello world"
+Hello world
+
+root@ubuntu-bionic:~# docker ps -a
+CONTAINER ID   IMAGE                               COMMAND                  CREATED         STATUS                     PORTS     NAMES
+159b303c6e26   ubuntu                              "echo 'Hello world'"     9 seconds ago   Exited (0) 7 seconds ago             ubuntu_vm
+c2899c3a4cfa   ubuntu                              "dflkjsdlk"              33 hours ago    Created                              sharp_perlman
+58501179a6da   ubuntu                              "echo 'Hello world'"     33 hours ago    Exited (0) 33 hours ago              upbeat_wilbur
+619ec19c8641   ubuntu                              "/bin/bash"              33 hours ago    Exited (0) 33 hours ago              intelligent_villani
+aab755824c3c   ubuntu                              "/bin/bash"              33 hours ago    Exited (0) 33 hours ago              nice_maxwell
+939de32aaf9b   sabarish24/demo_repo:myhelloworld   "echo 'Hello Sabaris…"   4 days ago      Exited (0) 4 days ago                nice_lamarr
+c833d655a68c   nginx                               "/docker-entrypoint.…"   5 days ago      Exited (0) 3 days ago                crazy_dhawan
+45ee2c60cafd   nginx                               "/docker-entrypoint.…"   5 days ago      Exited (0) 5 days ago                gallant_wing
+```
+
+14) **How to stop a container which running in the background?**
+
+docker stop <container_id>
+
+```jsx
+root@ubuntu-bionic:~# docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED         STATUS         PORTS     NAMES
+ca1029c44257   ubuntu    "bash"    5 seconds ago   Up 3 seconds             peaceful_keller
+root@ubuntu-bionic:~# docker stop ca
+ca
+root@ubuntu-bionic:~# docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+```
+
+To remove particular exited container from docker ps -a
+
+`docker container rm <container-id> or docker rm <container-id>`
+
+```jsx
+root@ubuntu-bionic:~# docker ps -a
+CONTAINER ID   IMAGE         COMMAND                  CREATED          STATUS                      PORTS
+NAMES
+464f05c62551   bmst/h3demo   "/bin/sh -c /home/ra…"   42 seconds ago   Up 40 seconds               0.0.0.0:80->8081/tcp, :::80->8081/tcp   serene_golick
+14a7540fd117   nginx         "/docker-entrypoint.…"   19 minutes ago   Exited (0) 4 minutes ago
+Volume
+6dfdc66baf24   nginx         "/docker-entrypoint.…"   5 hours ago      Exited (0) 24 minutes ago
+pensive_poitras
+066e24dc8eb9   redis         "docker-entrypoint.s…"   5 hours ago      Exited (0) 5 hours ago
+sharp_heisenberg
+root@ubuntu-bionic:~# docker rm 14a7540fd117
+14a7540fd117
+root@ubuntu-bionic:~# docker rm 6dfdc66baf24
+6dfdc66baf24
+root@ubuntu-bionic:~# docker rm 066e24dc8eb9
+066e24dc8eb9
+```
+
+15) **How to remove the container images ?(note : before removing images from docker images we have to stop & remove the running container from docker container list)**
+
+`docker rmi <container_image_id> or docker image rm <container_image_id>`
+
+```jsx
+root@ubuntu-bionic:~# docker images
+REPOSITORY             TAG            IMAGE ID       CREATED         SIZE
+sabarish24/demo_repo   myhelloworld   45f827a80238   4 days ago      231MB
+demo_repo              mynginx        f9c14fe76d50   7 days ago      143MB
+nginx                  latest         f9c14fe76d50   7 days ago      143MB
+sabarish24/demo_repo   mynginx        f9c14fe76d50   7 days ago      143MB
+ubuntu                 latest         3b418d7b466a   5 weeks ago     77.8MB
+centos                 latest         5d0da3dc9764   20 months ago   231MB
+root@ubuntu-bionic:~# docker rmi 3b
+Error response from daemon: conflict: unable to delete 3b418d7b466a (must be forced) - image is being used by stopped container ca1029c44257
+```
+
+16)**How to remove all stopped container from docker ps -a ?**
+
+`docker container prune`
+
+```jsx
+root@ubuntu-bionic:~# docker container prune
+WARNING! This will remove all stopped containers.
+Are you sure you want to continue? [y/N] y
+Deleted Containers:
+ca1029c442579d6d1d7b50b82d601a264f272c4bd158a4d1a0e735134139646c
+159b303c6e26602a21935ca6fe12aea320f8853b5327f189d578d158e7fbad48
+58501179a6da842f7a3570f4cc877a51dd3ee7e84fb048e72b8eaaa4bcc3a529
+619ec19c8641511e325b554501ae3a6b123c0ad7f9825b3656c56049cebf3a01
+aab755824c3cccaaeff78c81abcd606bbf78a8c5882b2bb67a14addb447230dc
+939de32aaf9b65e24d943b34223358162d66da4eaaaa77f60a99d663d33ad45c
+c833d655a68cd9b8f869e88d20857c5bcccc3682bf161e99c2c75f9e8a87c67b
+45ee2c60cafd9e995915e4e396b82a8267f14cdc8a0b2d0cd62957ac024e1038
+Total reclaimed space: 2.186kB
+```
+
+17)**How to remove all containers,images,networks,build cache?**
+
+`docker system prune —all`
+
+```jsx
+root@ubuntu-bionic:~# docker system prune
+WARNING! This will remove:
+all stopped containers
+
+all networks not used by at least one container
+
+all dangling images
+
+all dangling build cache
+
+Are you sure you want to continue? [y/N] y
+Total reclaimed space: 0B
+root@ubuntu-bionic:~# docker image ls
+REPOSITORY             TAG            IMAGE ID       CREATED         SIZE
+sabarish24/demo_repo   myhelloworld   45f827a80238   4 days ago      231MB
+demo_repo              mynginx        f9c14fe76d50   7 days ago      143MB
+nginx                  latest         f9c14fe76d50   7 days ago      143MB
+sabarish24/demo_repo   mynginx        f9c14fe76d50   7 days ago      143MB
+ubuntu                 latest         3b418d7b466a   5 weeks ago     77.8MB
+centos                 latest         5d0da3dc9764   20 months ago   231MB
+root@ubuntu-bionic:~# docker system prune -all
+unknown shorthand flag: 'l' in -ll
+See 'docker system prune --help'.
+root@ubuntu-bionic:~# docker system prune --all
+WARNING! This will remove:
+
+all stopped containers
+
+all networks not used by at least one container
+
+all images without at least one container associated to them
+
+all build cache
+
+Are you sure you want to continue? [y/N] y
+Deleted Images:
+untagged: centos:latest
+untagged: centos@sha256:a27fd8080b517143cbbbab9dfb7c8571c40d67d534bbdee55bd6c473f432b177
+untagged: demo_repo:mynginx
+untagged: nginx:latest
+untagged: nginx@sha256:af296b188c7b7df99ba960ca614439c99cb7cf252ed7bbc23e90cfda59092305
+untagged: sabarish24/demo_repo:mynginx
+untagged: sabarish24/demo_repo@sha256:6b06964cdbbc517102ce5e0cef95152f3c6a7ef703e4057cb574539de91f72e6
+deleted: sha256:f9c14fe76d502861ba0939bc3189e642c02e257f06f4c0214b1f8ca329326cda
+deleted: sha256:419f8948c50c723f2a5ac74428af3d804b5d0079d6df8f7f827663cf10cbc366
+deleted: sha256:1030aac4f1a8096ed58d3d4a2df55dd1b1b27d919ad156d97ad1f68081d0051a
+deleted: sha256:7d90b49d96c3036539ef144ecc27c01de03902d8ea166a0f7b77d11d3779c4bd
+deleted: sha256:551acb210764654af31b6cd51adaa74edc9a202587c3395fe0e9f95a2e097f8b
+deleted: sha256:3c530958db4c75c6fb409f339367aaf9a1e163c84718c035d4b09bebc83f43e7
+deleted: sha256:8cbe4b54fa88d8fc0198ea0cc3a5432aea41573e6a0ee26eca8c79f9fbfa40e3
+untagged: ubuntu:latest
+untagged: ubuntu@sha256:dfd64a3b4296d8c9b62aa3309984f8620b98d87e47492599ee20739e8eb54fbf
+deleted: sha256:3b418d7b466ac6275a6bfcb0c86fbe4422ff6ea0af444a294f82d3bf5173ce74
+deleted: sha256:b8a36d10656ac19ddb96ef3107f76820663717708fc37ce929925c36d1b1d157
+untagged: sabarish24/demo_repo:myhelloworld
+untagged: sabarish24/demo_repo@sha256:7c03ca3ebaae44608c89dc95dc7e60be9fdbd94212f75dbd8a1de1d2ea1f4234
+deleted: sha256:45f827a802380c3ae48f3af8a4e5bb1667e1e0a4a106ecabfb68c7069ba9d9fd
+deleted: sha256:809a9a9df78f3284d97992ecd52364953dcca62151a6a3d62d1572f586c5f7ad
+deleted: sha256:5d0da3dc976460b72c77d94c8a1ad043720b0416bfc16c52c45d4847e53fadb6
+deleted: sha256:74ddd0ec08fa43d09f32636ba91a0a3053b02cb4627c35051aff89f853606b59
+
+Total reclaimed space: 451.6MB
+```
+
+Day-2:
+
+18)How to view logs of the particular container?
+
+`docker logs <container-name>`
+
+```jsx
+root@ubuntu-bionic:~# docker ps -a
+CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS                     PORTS      NAMES
+ff04c809fa0b   redis     "docker-entrypoint.s…"   2 minutes ago   Up 2 minutes               6379/tcp   naughty_mirzakhani
+478c5686804c   redis     "docker-entrypoint.s…"   2 minutes ago   Exited (0) 2 minutes ago              epic_leavitt
+1286c5f9ae86   redis     "docker-entrypoint.s…"   6 minutes ago   Exited (0) 3 minutes ago              nervous_jones
+root@ubuntu-bionic:~# docker logs naughty_mirzakhani
+1:C 02 Jun 2023 05:13:12.130 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+1:C 02 Jun 2023 05:13:12.132 # Redis version=7.0.11, bits=64, commit=00000000, modified=0, pid=1, just started
+1:C 02 Jun 2023 05:13:12.132 # Warning: no config file specified, using the default config. In order to specify a config file use redis-server /path/to/redis.conf
+1:M 02 Jun 2023 05:13:12.133 * monotonic clock: POSIX clock_gettime
+```
+
+19)Here we are looking at a game using container (port forwarding)
+
+`docker run -e UID=$(id -u) -e GID=$(id -g) --rm -p 8081:8081 bmst/h3demo`(**-e** means environment variable) (**-p 8081:8081** port forwarding left side 8081 is for host machine : right side 8081 is for applications)
+
+```jsx
+root@ubuntu-bionic:~# docker run -d -e UID=$(id -u) -e GID=$(id -g) --rm -p 80:8081 bmst/h3demo
+b5e00d19b2bec08777492e049b46c73fcdeacbbea2b8f2a8d0d45271209e0251
+root@ubuntu-bionic:~# docker ps
+CONTAINER ID   IMAGE         COMMAND                  CREATED         STATUS         PORTS
+NAMES
+b5e00d19b2be   bmst/h3demo   "/bin/sh -c /home/ra…"   4 seconds ago   Up 2 seconds   0.0.0.0:80->8081/tcp, :::80->8081/tcp   youthful_allen
+```
+
+output:
+
+![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/1b36ca5b-f4a8-495d-b4d0-83e5dbabbb6f/Untitled.png)
+
+**Docker volumes**
+
+1) How to view list of docker volumes
+
+`docker volume ls`
+
+```jsx
+root@ubuntu-bionic:~# docker volume ls
+DRIVER    VOLUME NAME
+local     3c506fa4756a55a1497359f230f7fe53a181bd50565b92da0567302e0858ce70
+local     3ff01e8fe7eccbe1481fecbc70239acf1170685a9afcce231c60c711db4c9164
+local     447be4d5175ea0dfc97fbf2fba4243633ee300088e9cda022fa911679bc4e1be
+local     743c178238c68e0e0ebc98e595e4807340616a54eec90b2d350ade2cb6a02636
+local     def3d3db293da0e9a4556be8ab8f912f7f9d22fedf6846bf3ee64a6f0e5f2913
+local     e539773bfaeb3e560d356b566e75df564e06fb91b425676149a2830d0fa4cee4
+local     v001
+```
+
+2) How to mount volumes using nginx (volume mapping)
+
+`docker run -d --name <container-name> -p  <host port>:<app port>  -v  <host-location>:<app-location> <container-image>` (-v  means volume left side is for host machine path ( /home/vagrant) : right side is for applications path (/usr/share/nginx/html))
+
+```jsx
+root@ubuntu-bionic:~# echo "<h1>Hello from host</h1>" > index.html
+root@ubuntu-bionic:~# ls
+Dockerfile  compress.zip    file.txt    future.txt  kk.txt      sabari1.txt  sudo   test3
+a           create          file1.txt   gitstore    kk097.txt   sabari4.pdf  task   test4
+a.tar       [executethis.sh](http://executethis.sh/)  file13.txt  index.html  kk787.txt   sabari6.pdf  test1  this
+afile.txt   file            file23.txt  info.txt    sabari.txt  scripting    test2  vagrant
+root@ubuntu-bionic:~# pwd
+/home/vagrant
+root@ubuntu-bionic:~# docker run -d --name Volume -p 80:80 -v "$(pwd)":/usr/share/nginx/html nginx
+14a7540fd11714498b8c27a8c0eb1ca1d67ae93079508416b924581f7662e821
+root@ubuntu-bionic:~# docker ps
+CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS         PORTS                               NAMES
+14a7540fd117   nginx     "/docker-entrypoint.…"   6 seconds ago   Up 4 seconds   0.0.0.0:80->80/tcp, :::80->80/tcp   Volume
+```
+
+output:
+
+![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/1d507281-0578-45ea-8601-56f023d6b8f0/Untitled.png)
+
+3)How to create a volume in the docker?
+
+`docker volume create <volume-name>`
+
+```jsx
+root@ubuntu-bionic:~# docker create volume v002
+Unable to find image 'volume:latest' locally
+Error response from daemon: pull access denied for volume, repository does not exist or may require 'docker login': denied: requested access to the resource is denied
+root@ubuntu-bionic:~# docker volume create v002
+v002
+root@ubuntu-bionic:~# docker volume ls
+DRIVER    VOLUME NAME
+local     3c506fa4756a55a1497359f230f7fe53a181bd50565b92da0567302e0858ce70
+local     3ff01e8fe7eccbe1481fecbc70239acf1170685a9afcce231c60c711db4c9164
+local     447be4d5175ea0dfc97fbf2fba4243633ee300088e9cda022fa911679bc4e1be
+local     743c178238c68e0e0ebc98e595e4807340616a54eec90b2d350ade2cb6a02636
+local     def3d3db293da0e9a4556be8ab8f912f7f9d22fedf6846bf3ee64a6f0e5f2913
+local     e539773bfaeb3e560d356b566e75df564e06fb91b425676149a2830d0fa4cee4
+local     v001
+local     v002
+```
+
+4) how to inspect volume in the docker?
+
+`docker volume inspect <volume-name>`
+
+```jsx
+root@ubuntu-bionic:~# docker volume inspect v002
+[
+{
+"CreatedAt": "2023-06-02T11:51:37Z",
+"Driver": "local",
+"Labels": {},
+"Mountpoint": "/var/lib/docker/volumes/v002/_data",
+"Name": "v002",
+"Options": {},
+"Scope": "local"
+}
+]
+```
+
+5)how to use volume in the nginx which we created from docker volume (i.e v002)?
+
+`docker run -d --name Volume002 -p 80:80 -v v002:/usr/share/nginx/html nginx`
+
+```jsx
+root@ubuntu-bionic:~# docker volume inspect v002
+[
+{
+"CreatedAt": "2023-06-02T11:51:37Z",
+"Driver": "local",
+"Labels": {},
+"Mountpoint": "/var/lib/docker/volumes/v002/_data",
+"Name": "v002",
+"Options": {},
+"Scope": "local"
+}
+]
+root@ubuntu-bionic:~# touch /var/lib/docker/volumes/v002/_data/index.html
+root@ubuntu-bionic:~# ls /var/lib/docker/volumes/v002/_data/
+index.html
+root@ubuntu-bionic:~# echo "<h1>Hello from Sabarish D host</h1>" > /var/lib/docker/volumes/v002/_data/index.html
+root@ubuntu-bionic:~# docker run -d --name Volume002 -p 80:80 -v v002:/usr/share/nginx/html nginx
+0f73499aebcd9c88ee5ef41383a0ed4f60fb9673edf36f7bbeab52701fbf9f5b
+root@ubuntu-bionic:~# docker ps
+CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS         PORTS                               NAMES
+0f73499aebcd   nginx     "/docker-entrypoint.…"   6 seconds ago   Up 3 seconds   0.0.0.0:80->80/tcp, :::80->80/tcp   Volume002
+```
+
+output:
+
+![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/d2d8f1cd-bb0b-412c-8572-a12eec88ad29/Untitled.png)
+
+6)Another way to mount volume using volume mapping
+
+`docker run -d --name Volume002 -p 80:80 --mount source=v002,target=/usr/share/nginx/html nginx`
+
+```jsx
+root@ubuntu-bionic:~# echo "<h1>Hello world from Sabarish Devaraju host</h1>" > /var/lib/docker/volumes/v002/_data/index.html
+root@ubuntu-bionic:~# docker run -d --name Volume002 -p 80:80 --mount source=v002,target=/usr/share/nginx/html nginx
+08da13d82efebac60efd3f37177516ccd2c2d32e7955316e9a3ddd05e96be186
+root@ubuntu-bionic:~# docker ps
+CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS         PORTS                               NAMES
+08da13d82efe   nginx     "/docker-entrypoint.…"   3 minutes ago   Up 3 minutes   0.0.0.0:80->80/tcp, :::80->80/tcp   Volume002
+```
+
+output:
+
+![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/b8f0ca61-880a-40f4-99dd-5fe8bdbb025d/Untitled.png)
+
+7) how to remove volume in the docker?
+
+`docker volume rm <volume-name>`
+
+```jsx
+root@ubuntu-bionic:~# docker volume ls
+DRIVER    VOLUME NAME
+local     3c506fa4756a55a1497359f230f7fe53a181bd50565b92da0567302e0858ce70
+local     3ff01e8fe7eccbe1481fecbc70239acf1170685a9afcce231c60c711db4c9164
+local     447be4d5175ea0dfc97fbf2fba4243633ee300088e9cda022fa911679bc4e1be
+local     743c178238c68e0e0ebc98e595e4807340616a54eec90b2d350ade2cb6a02636
+local     def3d3db293da0e9a4556be8ab8f912f7f9d22fedf6846bf3ee64a6f0e5f2913
+local     e539773bfaeb3e560d356b566e75df564e06fb91b425676149a2830d0fa4cee4
+local     v001
+local     v002
+root@ubuntu-bionic:~# docker volume rm v001
+v001
+```
+
+
