@@ -1,0 +1,74 @@
+Explore all instructors in Dockerfile
+
+
+**What is docker file?**
+
+`Dockerfile` is a text document that contains all the commands a user could call on the command line to assemble an image. This page describes the commands you can use in a `Dockerfile`
+
+**List of docker file commands**
+
+FROM - to specify the base image which we want use 
+
+WORKDIR - to define the working directory for any commands that follow in the docker file.
+
+RUN - to install a package or any application
+
+COPY - to copy over files or directories from a specific location
+
+ADD - same as COPY, but we can also use a URL instead of a local file /directory and we can extract a tar file from the source directly into the destination.
+
+ENTRYPOINT - Command that will always be executed when the container starts. if not specified, the defaults is /bin/sh -c
+
+CMD - to define a default command to run when your container starts
+
+EXPOSE - to define which port through which to access your container application
+
+LABEL - to add metadata to the image.
+
+ARG - to define which we can store argument values
+
+USR- to define which user we can use here is vagrant user. By default user is root
+
+**Docker build**
+
+1) how to build a docker image using docker file
+
+`docker build -t  <repository-name>:<tag-name>`  (-t means tag <repository-name> myfirstbuild and <tag-name> here tag name means version like latest , 4.0 , 9.5-beta1)
+
+```jsx
+root@ubuntu-bionic:~# vi Dockerfile
+root@ubuntu-bionic:~# cat Dockerfile
+FROM centos
+MAINTAINER sabarish
+CMD ["echo","Hello world this is Sabarish Devaraju"]
+root@ubuntu-bionic:~# docker build -t myfirstbuild:latest .
+Sending build context to Docker daemon  444.4kB
+Step 1/3 : FROM centos
+latest: Pulling from library/centos
+a1d0c7532777: Pull complete
+Digest: sha256:a27fd8080b517143cbbbab9dfb7c8571c40d67d534bbdee55bd6c473f432b177
+Status: Downloaded newer image for centos:latest
+---> 5d0da3dc9764
+Step 2/3 : MAINTAINER sabarish
+---> Running in 7b22c56ccc99
+Removing intermediate container 7b22c56ccc99
+---> a566ca516d06
+Step 3/3 : CMD ["echo","Hello world this is Sabarish Devaraju"]
+---> Running in a7288d8569ac
+Removing intermediate container a7288d8569ac
+---> 278eeb7435c3
+Successfully built 278eeb7435c3
+Successfully tagged myfirstbuild:latest
+root@ubuntu-bionic:~# docker images
+REPOSITORY     TAG         IMAGE ID       CREATED         SIZE
+myfirstbuild   latest      278eeb7435c3   6 seconds ago   231MB
+nginx          latest      f9c14fe76d50   8 days ago      143MB
+redis          latest      0ec8ab59a35f   10 days ago     117MB
+hello-world    latest      9c7a54a9a43c   4 weeks ago     13.3kB
+centos         latest      5d0da3dc9764   20 months ago   231MB
+redis          4.0         191c4017dcdd   3 years ago     89.3MB
+bmst/h3demo    latest      f8bbfd6427c3   7 years ago     1.11GB
+postgres       9.5-beta1   e70910915a54   7 years ago     266MB
+root@ubuntu-bionic:~# docker run 278eeb7435c3
+Hello world this is Sabarish Devaraju
+```
