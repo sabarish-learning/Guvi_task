@@ -49,3 +49,34 @@ index.html
 To run docker-compose file 
 -----------------------------------
 docker-compose up --build
+
+vagrant@ubuntu-focal:~/task$ docker-compose up --build
+Building web
+[+] Building 2.1s (8/8) FINISHED                                                                         docker:default
+ => [internal] load build definition from Dockerfile                                                               0.1s
+ => => transferring dockerfile: 422B                                                                               0.0s
+ => [internal] load .dockerignore                                                                                  0.1s
+ => => transferring context: 2B                                                                                    0.0s
+ => [internal] load metadata for docker.io/library/nginx:alpine                                                    1.6s
+ => [1/3] FROM docker.io/library/nginx:alpine@sha256:db353d0f0c479c91bd15e01fc68ed0f33d9c4c52f3415e63332c3d0bf7a4  0.0s
+ => [internal] load build context                                                                                  0.0s
+ => => transferring context: 5.14kB                                                                                0.0s
+ => CACHED [2/3] COPY nginx.conf /etc/nginx/nginx.conf                                                             0.0s
+ => [3/3] COPY html /usr/share/nginx/html                                                                          0.2s
+ => exporting to image                                                                                             0.1s
+ => => exporting layers                                                                                            0.1s
+ => => writing image sha256:38e0585a94d5e15750765e0f5f2d4749907cde8bb7b5f9289488c33e6c310269                       0.0s
+ => => naming to docker.io/library/task_web                                                                        0.0s
+Recreating task_web_1 ... done
+Attaching to task_web_1
+web_1  | /docker-entrypoint.sh: /docker-entrypoint.d/ is not empty, will attempt to perform configuration
+web_1  | /docker-entrypoint.sh: Looking for shell scripts in /docker-entrypoint.d/
+web_1  | /docker-entrypoint.sh: Launching /docker-entrypoint.d/10-listen-on-ipv6-by-default.sh
+web_1  | 10-listen-on-ipv6-by-default.sh: info: Getting the checksum of /etc/nginx/conf.d/default.conf
+web_1  | 10-listen-on-ipv6-by-default.sh: info: Enabled listen on IPv6 in /etc/nginx/conf.d/default.conf
+web_1  | /docker-entrypoint.sh: Sourcing /docker-entrypoint.d/15-local-resolvers.envsh
+web_1  | /docker-entrypoint.sh: Launching /docker-entrypoint.d/20-envsubst-on-templates.sh
+web_1  | /docker-entrypoint.sh: Launching /docker-entrypoint.d/30-tune-worker-processes.sh
+web_1  | /docker-entrypoint.sh: Configuration complete; ready for start up
+web_1  | 10.0.2.2 - - [13/Nov/2023:14:08:22 +0000] "GET / HTTP/1.1" 200 5034 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36"
+
