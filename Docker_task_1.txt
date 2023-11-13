@@ -1,0 +1,51 @@
+Create a dockerfile, docker-compose file which when executed must display your basic details in website
+
+Dockerfile:
+----------------------
+# Use an official Nginx runtime as a base image
+FROM nginx:alpine
+
+# Copy website content to the default Nginx web server directory
+COPY html /usr/share/nginx/html
+
+# Expose port 80 for web traffic
+EXPOSE 80
+
+# Command to start Nginx when the container runs
+CMD ["nginx", "-g", "daemon off;"]
+
+docker-compose file:
+-----------------------------
+version: '3'
+
+services:
+  web:
+    # Build the image using the Dockerfile in the current directory
+    build:
+      context: .
+      dockerfile: Dockerfile
+    # Map port 9000 on the host to port 80 on the container
+    ports:
+      - "9000:80"
+    # Define a volume for the web server content
+    volumes:
+      - ./html:/usr/share/nginx/html
+	  
+index.html
+------------------------
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Basic Details</title>
+</head>
+<body>
+    <p>This is a basic website displaying my details.</p>
+    <p>Feel free to customize this content with your own details.</p>
+</body>
+</html>
+
+To run docker-compose file 
+-----------------------------------
+docker-compose up --build
